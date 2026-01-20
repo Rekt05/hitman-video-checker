@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>YT Vid Checker</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f0f0f0;
+        }
+
+        .page {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            text-align: left;
+            font-size: 0.9rem;
+            color: #444;
+            margin-top: 10px;
+            line-height: 1.5;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+        <h1 id="count">0</h1>
+        <p>Runs with unavailable youtube videos</p>
+        <button onclick="openBatch()">Open 25 Runs</button>
+
+        <div class="info">
+            <p>This website was made for Hitman WoA's SRC mods to find and reject runs where their youtube videos have
+                become unavailable, other video platforms are not checked but a list of them are stored in a <a
+                    href="https://github.com/Rekt05/hitman-video-checker/blob/main/non_yt_videos.json"
+                    style="color: blue;" target="_blank">json file</a>
+                </br>
+                </br>The site will initiate the update every day at 10pm UTC but updates will probably only be visible
+                some time after that.
+                </br>
+                </br> Originally there were 275 runs hence the open 25 runs button, i dont expect there to be more than
+                25 that often after the initial purge so most of this logic is irrelevant, if there are more than 25
+                runs and you want to reset the progress just refresh the page
+                </br>
+                </br>The open 25 runs button will open 25 runs at once, if it doesnt you may need to enable pop ups or
+                whatever
+                else your browser wants, if you do not want to enable these permissions for this site you can find the
+                <a href="https://github.com/Rekt05/hitman-video-checker/blob/main/unavailable_yt_videos.json"
+                    style="color: blue;" target="_blank">json file</a>
+                </br>
+                </br><a href="https://github.com/Rekt05/hitman-video-checker" style="color: blue;"
+                    target="_blank">Github link</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let runs = [];
+        const amount = 25;
+        let index = 0;
+
+        fetch('unavailable_yt_videos.json')
+            .then(res => res.json())
+            .then(data => {
+                runs = data;
+                updateDisplay();
+            })
+
+        function updateDisplay() {
+            const remaining = Math.max(0, runs.length - index);
+            document.getElementById('count').innerText = remaining;
+        }
+
+        function openBatch() {
+            if (runs.length === 0) return;
+
+            const end = Math.min(index + amount, runs.length);
+
+            for (let i = index; i < end; i++) {
+                window.open(runs[i].weblink, '_blank');
+            }
+
+            index = end;
+            updateDisplay();
+        }
+    </script>
+
+</body>
+
+</html>
