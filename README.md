@@ -8,3 +8,6 @@ I have no plans to expand this script to check non YT videos as YT videos are th
 
 *Uses [speedruncompy](https://github.com/ManicJamie/speedruncompy) as opposed to SRC's official v1 API for future proofing as pagination breaks at 10k, I dont know how/it isnt supported by v2 to collect the runs from archived categories on SRC, which is something that you could do with v1, so the run count will always be less than the number it says on SRC games with archived categories
 
+# To Do:
+- Send discord message after pages deployment instead of immediately after checking
+
