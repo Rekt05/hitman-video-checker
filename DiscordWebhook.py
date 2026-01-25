@@ -14,7 +14,7 @@ def send_message():
         message = {
             "embeds": [{
                 "title": "New Unavailable Videos",
-                "description": f"Found {count} new unavailable videos",
+                "description": f"Found {count} new unavailable video(s)",
                 "url": "https://rekt05.github.io/hitman-video-checker/"
             }]
         }
