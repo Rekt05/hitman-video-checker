@@ -10,4 +10,5 @@ I have no plans to expand this script to check non YT videos as YT videos are th
 
 # To Do:
 - Send discord message after pages deployment instead of immediately after checking
+- Send discord messages only if count > previous day count
 
