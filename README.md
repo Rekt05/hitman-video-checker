@@ -10,5 +10,5 @@ I have no plans to expand this script to check non YT videos as YT videos are th
 
 # To Do:
 - Send discord message after pages deployment instead of immediately after checking
-- Send discord messages only if count > previous day count
+- Add a page view where all the runs are just in a list which you can open manually which also gets removed when you click on a run like the 25 runs button logic
 
