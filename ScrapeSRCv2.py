@@ -4,6 +4,12 @@ from pathlib import Path
 from speedruncompy.api import *
 from speedruncompy.endpoints import *
 
+logging.getLogger("speedruncompy").setLevel(logging.ERROR)
+
+#workaround to get the script to run again but will need to look into this more in depth later, maybe transition to the up to date speedruncompy structure
+if 13 not in GameType._value2member_map_:
+    GameType._value2member_map_[13] = "errorpreventionxd"
+
 games = {
     "j1ne5891": {"name": "Main Board", "path": Path("MainBoard.json")},
     "v1ponx76": {"name": "Category Extensions", "path": Path("CategoryExtensions.json")},
