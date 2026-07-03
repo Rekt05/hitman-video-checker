@@ -32,6 +32,19 @@
             margin-bottom: 20px;
         }
 
+        .run-list {
+            text-align: left;
+            margin: 0 0 20px;
+            padding-left: 1.5rem;
+            line-height: 2;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .run-list a {
+            color: #0066cc;
+        }
+
         .info {
             text-align: left;
             font-size: 0.9rem;
@@ -48,8 +61,10 @@
 
     <div class="page">
         <h1 id="count">0</h1>
-        <p>Runs with unavailable youtube videos</p>
+        <p id="description">Runs with unavailable youtube videos</p>
         <button onclick="openBatch()">Open 25 Runs</button>
+
+        <ol class="run-list" id="list"></ol>
 
         <div class="info">
             <p>This website was made for Hitman WoA's SRC mods to find and reject runs where their youtube videos have
@@ -61,16 +76,8 @@
                 some time after that, if you have rejected/edited a run it will still show on the site until the next
                 auto update or you can dm me on discord to initiate a manual update
                 </br>
-                </br> Originally there were 275 runs hence the open 25 runs button, i dont expect there to be more than
-                25 that often after the initial purge so most of this logic is irrelevant, if there are more than 25
-                runs and you want to reset the progress just refresh the page
-                </br>
                 </br>The open 25 runs button will open 25 runs at once, if it doesnt you may need to enable pop ups or
-                whatever
-                else your browser wants, if you do not want to enable these permissions for this site you can find the
-                runs in the
-                <a href="https://github.com/Rekt05/hitman-video-checker/blob/main/unavailable_yt_videos.json"
-                    style="color: blue;" target="_blank">json file</a>
+                whatever else, if you would like to reset the counter, button or list, you can refresh the page
                 </br>
                 </br><a href="https://github.com/Rekt05/hitman-video-checker" style="color: blue;"
                     target="_blank">Github link</a>
@@ -79,33 +86,58 @@
     </div>
 
     <script>
-        let runs = [];
+        let remaining = [];
         const amount = 25;
-        let index = 0;
 
         fetch('unavailable_yt_videos.json')
             .then(res => res.json())
             .then(data => {
-                runs = data;
+                remaining = data;
                 updateDisplay();
+                renderList();
             })
 
+        function removeRun(run) {
+            const idx = remaining.indexOf(run);
+            if (idx === -1) return;
+            remaining.splice(idx, 1);
+            updateDisplay();
+            renderList();
+        }
+
+        function renderList() {
+            const list = document.getElementById('list');
+            list.replaceChildren();
+            remaining.forEach(run => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = run.weblink;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.textContent = run.weblink;
+                a.addEventListener('click', () => removeRun(run));
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+        }
+
         function updateDisplay() {
-            const remaining = Math.max(0, runs.length - index);
-            document.getElementById('count').innerText = remaining;
+            document.getElementById('count').innerText = remaining.length;
+            if (remaining.length === 1) {
+                document.getElementById('description').innerText = "Run with an unavailable youtube video";
+            } else {
+                document.getElementById('description').innerText = "Runs with unavailable youtube videos";
+            }
         }
 
         function openBatch() {
-            if (runs.length === 0) return;
+            if (remaining.length === 0) return;
 
-            const end = Math.min(index + amount, runs.length);
-
-            for (let i = index; i < end; i++) {
-                window.open(runs[i].weblink, '_blank');
-            }
-
-            index = end;
+            const batch = remaining.splice(0, amount);
             updateDisplay();
+            renderList();
+
+            batch.forEach(run => window.open(run.weblink, '_blank'));
         }
     </script>
 
