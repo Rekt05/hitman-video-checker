@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install google-api-python-client speedruncompy==0.5.3 requests
+          pip install google-api-python-client speedruncompy==1.0.5 requests
 
       - name: Run Scraper
         run: python ScrapeSRCv2.py
